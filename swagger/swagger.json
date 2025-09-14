@@ -1,0 +1,118 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "info": {
+    "title": "API de Estudantes",
+    "version": "1.0.0",
+    "description": "API para registro de estudantes, lançamento de notas e consulta de média final."
+  },
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "Login de usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["username", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login realizado com sucesso" },
+          "401": { "description": "Login ou senha inválidos" }
+        }
+      }
+    },
+    "/students": {
+      "post": {
+        "summary": "Registrar estudante",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "username": { "type": "string" }
+                },
+                "required": ["name", "username"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Estudante registrado" },
+          "400": { "description": "Usuário já existe no sistema" }
+        }
+      }
+    },
+    "/students/{username}": {
+      "get": {
+        "summary": "Consultar estudante",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Dados do estudante" },
+          "404": { "description": "Estudante não encontrado" }
+        }
+      }
+    },
+    "/students/{username}/notas": {
+      "post": {
+        "summary": "Lançar nota para estudante",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nota": { "type": "number" }
+                },
+                "required": ["nota"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Nota lançada" },
+          "400": { "description": "Nota inválida ou máximo de notas atingido" }
+        }
+      }
+    }
+  }
+}

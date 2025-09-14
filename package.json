@@ -1,0 +1,25 @@
+{
+  "name": "pgats-api-trab",
+  "version": "1.0.0",
+  "description": "API para registro de estudantes, notas e autenticação JWT.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+  "test": "mocha tests/student.testexternal.js"
+
+  },
+  "author": "PatyArcanjo",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "chai": "^4.3.8",
+    "mocha": "^11.7.2",
+    "supertest": "^7.1.4",
+    "sinon": "^17.0.1"
+  }
+}
