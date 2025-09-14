@@ -14,42 +14,13 @@ Esta API permite registrar estudantes, lançar notas, consultar estudantes e cal
    node server.js
    ```
 
-## Endpoints REST
+## Endpoints
 
 - `POST /login` – Login de usuário (username, password)
 - `POST /students` – Registrar estudante (name, username)
 - `GET /students/:username` – Consultar estudante
 - `POST /students/:username/notas` – Lançar nota (nota)
 - `GET /api-docs` – Documentação Swagger
-
-## API GraphQL
-
-Os arquivos da API GraphQL estão em `graphql/`.
-
-Para executar a API GraphQL:
-
-1. Instale as dependências:
-   ```bash
-   npm install apollo-server-express graphql jsonwebtoken
-   ```
-2. Inicie o servidor GraphQL:
-   ```bash
-   node graphql/server.js
-   ```
-3. Acesse o playground em:
-   [http://localhost:4000/graphql](http://localhost:4000/graphql)
-
-### Queries e Mutations
-- `login(username, password)` – retorna token JWT
-- `registrarEstudante(name, username)` – exige token JWT
-- `lancarNota(username, nota)` – exige token JWT
-- `estudante(username)` – consulta estudante
-- `estudantes` – lista todos estudantes
-
-Para Mutations protegidas, envie o token JWT no header:
-```
-Authorization: Bearer SEU_TOKEN_AQUI
-```
 
 ## Regras de Negócio
 - Não permite estudantes duplicados
