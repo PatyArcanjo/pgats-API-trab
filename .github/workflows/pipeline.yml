@@ -7,7 +7,24 @@ on:
     branches: [ "main" ]
 
 jobs:
+
   build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+
+    - name: Install dependencies
+      run: npm install
+
+  api:
+    needs: [build]  # será executado após o build
     runs-on: ubuntu-latest
 
     steps:
@@ -24,14 +41,34 @@ jobs:
 
     - name: Subir a API REST
       run: npm start &
+      env:
+        NODE_ENV: test
 
     - name: Subir a API GraphQL
       run: npm run start-graphql &
+      env:
+        NODE_ENV: test
 
     - name: Esperar as APIs estarem funcionando
       run: sleep 8
 
-    - name: Rodar os testes de API viacontroller
+  test:
+    needs: [api]  # será executado após subir as APIs
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Rodar os testes de API via controller
       run: npm run test:test-controller
 
     - name: Rodar os testes de API via HTTP
