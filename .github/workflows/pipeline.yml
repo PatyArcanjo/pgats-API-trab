@@ -32,10 +32,10 @@ jobs:
       run: sleep 8
 
     - name: Rodar os testes de API viacontroller
-      run: npm run test-controller
+      run: npm run test:test-controller
 
     - name: Rodar os testes de API via HTTP
-      run: npm run test-external
+      run: npm run test:test-external
 
     - name: Rodar os testes de API GraphQL
-      run: npm run test-graphql
+      run: npm run test:test-graphql
