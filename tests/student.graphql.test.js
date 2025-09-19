@@ -107,4 +107,31 @@ describe('API GraphQL de Estudantes', () => {
       .send({ query: mutationNota });
     expect(res.body.errors[0].message).to.equal('Nota inválida');
   });
+  it('5 - Não deve permitir mais de 3 notas via GraphQL', async () => {
+    const mutationEstudante = `
+      mutation {
+        registrarEstudante(name: "Limite", username: "limite") {
+          username
+        }
+      }
+    `;
+    await request(app)
+      .post('/graphql')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ query: mutationEstudante });
+
+    // Lançar 3 notas válidas
+    for (const nota of [8, 7, 6]) {
+      await request(app)
+        .post('/graphql')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ query: `mutation { lancarNota(username: "limite", nota: ${nota}) { notas } }` });
+    }
+    // Tentar lançar a quarta nota
+    const res = await request(app)
+      .post('/graphql')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ query: `mutation { lancarNota(username: "limite", nota: 5) { notas } }` });
+    expect(res.body.errors[0].message).to.include('Máximo de 3 notas lançadas');
+  });
 });

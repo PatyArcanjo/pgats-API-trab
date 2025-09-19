@@ -49,15 +49,43 @@ describe('API de Estudantes', () => {
   });
 
   it('4 - Lançamento de notas inválidas; valores menor que 0 ou maior que 10', async () => {
-    await request(app)
-      .post('/students')
-      .set('Authorization', `Bearer ${token}`)
-      .send({ name: 'Ana', username: 'ana' });
-    const res = await request(app)
-      .post('/students/ana/notas')
-      .set('Authorization', `Bearer ${token}`)
-      .send({ nota: 12 });
-  expect(res.statusCode).to.equal(400);
-  expect(res.body).to.have.property('error', 'Nota inválida');
+    it('4 - Lançamento de notas inválidas; valores menor que 0 ou maior que 10', async () => {
+      await request(app)
+        .post('/students')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ name: 'Ana', username: 'ana' });
+      const res = await request(app)
+        .post('/students/ana/notas')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ nota: 12 });
+      expect(res.statusCode).to.equal(400);
+      expect(res.body).to.have.property('error', 'Nota inválida');
+    });
+
+    it('5 - Não deve permitir mais de 3 notas', async () => {
+      await request(app)
+        .post('/students')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ name: 'Limite', username: 'limite' });
+      await request(app)
+        .post('/students/limite/notas')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ nota: 8 });
+      await request(app)
+        .post('/students/limite/notas')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ nota: 7 });
+      await request(app)
+        .post('/students/limite/notas')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ nota: 6 });
+      const res = await request(app)
+        .post('/students/limite/notas')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ nota: 5 });
+      expect(res.statusCode).to.equal(400);
+      expect(res.body).to.have.property('error');
+      expect(res.body.error).to.contain('Máximo de 3 notas lançadas');
+    });
   });
 });

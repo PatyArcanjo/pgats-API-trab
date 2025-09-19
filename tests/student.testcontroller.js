@@ -48,4 +48,13 @@ describe('Controller de Estudantes (Mock)', () => {
       expect(err.message).to.equal('Nota inválida');
     }
   });
+
+  it('5 - Não deve permitir mais de 3 notas', async () => {
+    addNotaStub.throws(new Error('Máximo de 3 notas lançadas'));
+    try {
+      studentService.addNota('limite', 5);
+    } catch (err) {
+      expect(err.message).to.equal('Máximo de 3 notas lançadas');
+    }
+  });
 });
