@@ -34,7 +34,12 @@ Os testes automatizados estão em `tests/` e podem ser executados com Mocha/Supe
 # Testes de Performance K6
 Os testes automatizados estão em `tests/k6` e podem ser executados através do comnando : 
 
-k6 run  test/k6/students.js 
+k6 run test/k6/students.js 
+
+com arquivo html
+
+K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=html-report.html K6_WEB_DASHBOARD_PERIOD=100ms  k6 run test/k6/students.js 
+
 
 ## Documentação
 Acesse `/api-docs` para visualizar a documentação Swagger.
