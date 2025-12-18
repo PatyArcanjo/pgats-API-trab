@@ -36,7 +36,6 @@ Os testes automatizados estão em `tests/k6` e podem ser executados através do 
 
 k6 run  test/k6/students.js 
 
-
 ## Documentação
 Acesse `/api-docs` para visualizar a documentação Swagger.
 
